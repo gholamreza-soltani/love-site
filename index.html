@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>یه دعوت ویژه</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap">
+<style>
+:root{--bg1:#fff0f5;--bg2:#ffd6e5;--text:#a0124a;--primary:#e91e63;--primary-d:#c2185b;--card:rgba(255,255,255,.88);--field:#fff;--field-text:#3a1020;--err:#c62828;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#2a0f1c;--bg2:#431529;--text:#ffb3cf;--primary:#f06292;--primary-d:#ff80ab;--card:rgba(60,22,40,.9);--field:#3a1828;--field-text:#ffe6ef;--err:#ff8a80}}
+:root[data-theme="dark"]{--bg1:#2a0f1c;--bg2:#431529;--text:#ffb3cf;--primary:#f06292;--primary-d:#ff80ab;--card:rgba(60,22,40,.9);--field:#3a1828;--field-text:#ffe6ef;--err:#ff8a80}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{font-family:Vazirmatn,Tahoma,"Segoe UI",system-ui,sans-serif;background:var(--bg1);background-image:linear-gradient(var(--bg1),var(--bg2));background-attachment:fixed;color:var(--text);min-height:100vh;overflow-x:hidden}
+.screen{display:none;min-height:100vh;padding:20px;flex-direction:column;align-items:center;justify-content:center;max-width:520px;margin:0 auto;position:relative;z-index:2}
+.screen.on{display:flex}
+.msg{font-size:1.4rem;line-height:2.1;text-align:center;white-space:pre-line;font-weight:700;transition:opacity .25s}
+.msg.fade{opacity:0}
+.card{background:var(--card);border-radius:28px;padding:24px;width:100%;text-align:center;font-size:1.2rem;line-height:2.1;white-space:pre-line;font-weight:700}
+button{font-family:inherit;font-size:1.05rem;font-weight:700;cursor:pointer;border-radius:28px;border:2px solid var(--primary);padding:0 22px;height:54px}
+.btn{background:var(--primary);color:#fff}
+.btn:active{background:var(--primary-d)}
+.ghost{background:transparent;color:var(--primary)}
+#top{flex:1;display:flex;align-items:center;justify-content:center;width:100%}
+#yes{transition:transform .4s;margin-top:10px}
+#arena{position:relative;width:100%;height:190px;margin-top:26px}
+#no{position:absolute;width:150px;height:52px;padding:0;transition:left .45s,top .45s,transform .45s}
+.big{font-size:4rem;animation:pulse .7s infinite alternate}
+@keyframes pulse{to{transform:scale(1.25)}}
+.heart{position:fixed;bottom:-60px;z-index:1;pointer-events:none;animation:rise linear forwards}
+@keyframes rise{to{transform:translateY(-115vh);opacity:.1}}
+#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:3}
+h3{margin:14px 0 6px;align-self:flex-start}
+.row{display:flex;gap:8px;width:100%}
+.row>*{flex:1}
+select,input,textarea{font-family:inherit;font-size:1rem;width:100%;padding:12px;border-radius:14px;border:2px solid var(--primary);background:var(--field);color:var(--field-text)}
+select:disabled{opacity:.5}
+textarea{min-height:90px;resize:vertical}
+#err{color:var(--err);text-align:center;min-height:1.5em;margin:8px 0}
+#plan{justify-content:flex-start}
+.full{width:100%}
+.lnk{display:flex;align-items:center;justify-content:center;height:54px;border-radius:28px;text-decoration:none;font-weight:700;border:2px solid var(--primary)}
+.hint{margin:22px 0 8px;text-align:center;font-weight:700}
+.ig{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);border:0;color:#fff;gap:10px;width:100%}
+</style>
+</head>
+<body>
+
+<section class="screen on" id="s-invite">
+  <div id="top"><div class="msg" id="msg"></div></div>
+  <button class="btn" id="yes">آره، میام ❤️</button>
+  <div id="arena"><button class="ghost" id="no">نه، نمیام 🙈</button></div>
+</section>
+
+<section class="screen" id="s-celebrate">
+  <div class="big">❤️</div>
+  <div class="card" id="celebrateText"></div>
+  <button class="btn full" id="toPlan" style="margin-top:22px">بیا قرارمون رو برنامه‌ریزی کنیم 💕</button>
+</section>
+
+<section class="screen" id="plan">
+  <h3>تاریخ قرار 📅</h3>
+  <select id="D"></select>
+  <h3>ساعت قرار 🕒</h3>
+  <div class="row"><select id="H"></select><select id="Mi"></select></div>
+  <h3>کجا دوست داری بریم؟ 📍</h3>
+  <input id="place" placeholder="مثلاً کافه، پارک، رستوران یا هر جایی که دوست داری...">
+  <h3>اگه حرف یا پیشنهادی داری، اینجا بنویس 💌</h3>
+  <textarea id="note" placeholder="هر چی تو دلته بنویس..."></textarea>
+  <div id="err"></div>
+  <button class="btn full" id="confirm">تأیید قرارمون ❤️</button>
+</section>
+
+<section class="screen" id="s-final">
+  <div class="card" id="finalText"></div>
+  <div class="hint">برای فرستادن قرارمون برام، دکمه‌ی زیر رو بزن 💌</div>
+  <a class="lnk ig" id="shIg" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="#fff" stroke="none"/></svg><span>ارسال در اینستاگرام</span></a>
+  <div class="hint" id="igNote" style="margin:10px 0 0;font-size:.9rem"></div>
+</section>
+
+<canvas id="confetti"></canvas>
+
+<script>
+const $ = s => document.querySelector(s);
+const P = n => String(n).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
+const range = (a, b) => Array.from({length: b - a + 1}, (_, i) => a + i);
+
+const INVITE = "یه چیزی هست که خیلی دوست دارم بهت بگم... ❤️\n\nدلم می‌خواد یه روز قشنگ رو کنار تو بگذرونم! 🥹💕\n\nنظرت چیه با هم بریم بیرون و یه خاطره قشنگ بسازیم؟ 🌹✨";
+const NO_MSGS = [
+"مطمئنی؟ 🥺 دلم می‌شکنه‌ها! 💔","بیا دیگه، قول می‌دم خوش بگذره! ❤️","بذار مهمونت کنم به یه نوشیدنی خوشمزه! ☕💕","فقط یه بار با هم بریم بیرون، باشه؟ 🥹","دلم می‌گه بالاخره روی آره کلیک می‌کنی! 💖","تصور کن قراره چه روز قشنگی بسازیم! 🌹","اگه یکی از بهترین خاطرات زندگیت بشه چی؟ ✨","قول می‌دم تمام تلاشم رو بکنم که بخندی! 😊❤️","فقط یه فرصت کوچولو بهم بده! 🥺","ببین دکمه نه چقدر کوچولو شده! 😂","فکر کنم کائنات می‌خوان با هم بریم بیرون! 🌙","یه عالمه خنده و خوش‌گذرونی در انتظارمونه! 🍕💕","قول می‌دم ارزشش رو داشته باشه! ❤️","من و تو، یه روز قشنگ و کلی خاطره! 🌸","اگه خوراکی هم بیارم، نظرت عوض می‌شه؟ 🍫🥹","حتی دکمه نه هم دیگه خسته شده! 😂💗","بذار یه دلیل برای لبخند زدنت باشم! 💕","شاید این قرار شروع یه اتفاق قشنگ باشه! 🌹","یه قرار، دو تا لبخند و کلی خاطره! ❤️✨","خب دیگه، چقدر باید نازتو بکشم؟ 🥹😂","دکمه نه داره فرار می‌کنه، تو هم تسلیم شو! 🏃💨","بستنی هم با من! 🍦💕","این‌قدر قشنگ ازت خواهش می‌کنم که دیگه نمی‌تونی نه بگی! 🥰","کلی برنامه‌ی باحال تو ذهنمه، فقط تو بگو آره! 🎈","دکمه آره منتظره، دلش برات تنگ شده! 💞"
+];
+const CELEBRATE = "واااای! 😍❤️\n\nبالاخره گفتی آره! 🥹💖\n\nنمی‌دونی چقدر خوشحالم کردی!\n\nبی‌صبرانه منتظرم یه روز قشنگ رو کنار هم بگذرونیم. 🌹✨\n\nپس قرارمون قطعی شد؟ 🥰";
+const MONTHS = ["فروردین","اردیبهشت","خرداد","تیر","مرداد","شهریور","مهر","آبان","آذر","دی","بهمن","اسفند"];
+const DAYS = ["یکشنبه","دوشنبه","سه‌شنبه","چهارشنبه","پنجشنبه","جمعه","شنبه"];
+
+/* ---------- Jalali calendar ---------- */
+function toJ(gy, gm, gd) {
+  const g = [0,31,59,90,120,151,181,212,243,273,304,334];
+  const gy2 = gm > 2 ? gy + 1 : gy;
+  let days = 355666 + 365*gy + Math.floor((gy2+3)/4) - Math.floor((gy2+99)/100) + Math.floor((gy2+399)/400) + gd + g[gm-1];
+  let jy = -1595 + 33*Math.floor(days/12053); days %= 12053;
+  jy += 4*Math.floor(days/1461); days %= 1461;
+  if (days > 365) { jy += Math.floor((days-1)/365); days = (days-1) % 365; }
+  const jm = days < 186 ? 1 + Math.floor(days/31) : 7 + Math.floor((days-186)/30);
+  const jd = 1 + (days < 186 ? days % 31 : (days-186) % 30);
+  return [jy, jm, jd];
+}
+function toG(jy, jm, jd) {
+  jy += 1595;
+  let days = -355668 + 365*jy + Math.floor(jy/33)*8 + Math.floor(((jy%33)+3)/4) + jd + (jm < 7 ? (jm-1)*31 : (jm-7)*30 + 186);
+  let gy = 400*Math.floor(days/146097); days %= 146097;
+  if (days > 36524) { days--; gy += 100*Math.floor(days/36524); days %= 36524; if (days >= 365) days++; }
+  gy += 4*Math.floor(days/1461); days %= 1461;
+  if (days > 365) { gy += Math.floor((days-1)/365); days = (days-1) % 365; }
+  let gd = days + 1;
+  const s = [0,31,(gy%4==0 && gy%100!=0) || gy%400==0 ? 29 : 28,31,30,31,30,31,31,30,31,30,31];
+  let gm = 0;
+  for (; gm < 13; gm++) { if (gd <= s[gm]) break; gd -= s[gm]; }
+  return [gy, gm, gd];
+}
+const isLeap = y => toJ(...toG(y, 12, 30)).join() === [y, 12, 30].join();
+const dim = (y, m) => m < 7 ? 31 : m < 12 ? 30 : isLeap(y) ? 30 : 29;
+
+/* ---------- screens ---------- */
+const IG_USERNAME = ""; // Instagram username (without @) to open the DM directly
+let confettiOn = false;
+function show(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.toggle("on", s.id === id));
+  confettiOn = id === "s-celebrate";
+  window.scrollTo(0, 0);
+}
+
+/* ---------- invite ---------- */
+let noCount = 0;
+const msg = $("#msg"), no = $("#no"), yes = $("#yes"), arena = $("#arena");
+msg.textContent = INVITE;
+function placeNo(random) {
+  const maxX = Math.max(0, arena.clientWidth - 150), maxY = Math.max(0, arena.clientHeight - 52);
+  no.style.left = (random ? Math.random()*maxX : maxX/2) + "px";
+  no.style.top = (random ? Math.random()*maxY : maxY/2) + "px";
+}
+placeNo(false);
+no.addEventListener("click", () => {
+  noCount++;
+  placeNo(true);
+  no.style.transform = "scale(" + Math.max(0.25, 1 - 0.09*noCount) + ")";
+  yes.style.transform = "scale(" + Math.min(1.5, 1 + 0.04*noCount) + ")";
+  msg.classList.add("fade");
+  setTimeout(() => { msg.textContent = NO_MSGS[(noCount-1) % NO_MSGS.length]; msg.classList.remove("fade"); }, 220);
+});
+yes.addEventListener("click", () => {
+  $("#celebrateText").textContent = CELEBRATE;
+  show("s-celebrate");
+  startHearts();
+});
+$("#toPlan").addEventListener("click", () => show("plan"));
+
+/* ---------- celebration effects ---------- */
+function startHearts() {
+  const em = ["❤️","💖","💕","💗","🌹"];
+  for (let i = 0; i < 18; i++) {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.textContent = em[i % em.length];
+    h.style.left = Math.random()*92 + "vw";
+    h.style.fontSize = (20 + Math.random()*24) + "px";
+    h.style.animationDuration = (7 + Math.random()*7) + "s";
+    h.style.animationDelay = (Math.random()*5) + "s";
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 16000);
+  }
+}
+const cv = $("#confetti"), cx = cv.getContext("2d");
+const colors = ["#e91e63","#ff80ab","#ffc107","#7c4dfd","#26c6da","#ff7043"];
+let pieces = [];
+function resize() { cv.width = innerWidth; cv.height = innerHeight; }
+addEventListener("resize", resize); resize();
+for (let i = 0; i < 100; i++) pieces.push({x: Math.random(), y: Math.random(), v: .0015 + Math.random()*.003, s: 7 + Math.random()*8, c: colors[i % colors.length], r: Math.random()*6, w: Math.random()*.06 + .02});
+(function loop() {
+  cx.clearRect(0, 0, cv.width, cv.height);
+  if (confettiOn) {
+    pieces.forEach(p => {
+      p.y += p.v; p.r += p.w; if (p.y > 1.05) p.y = -0.05;
+      cx.save();
+      cx.translate(p.x*cv.width + Math.sin(p.r)*20, p.y*cv.height);
+      cx.rotate(p.r); cx.fillStyle = p.c;
+      cx.fillRect(-p.s/2, -p.s/3, p.s, p.s*.6);
+      cx.restore();
+    });
+  }
+  requestAnimationFrame(loop);
+})();
+
+/* ---------- plan ---------- */
+const now = new Date();
+const tj = toJ(now.getFullYear(), now.getMonth()+1, now.getDate());
+const D = $("#D"), H = $("#H"), Mi = $("#Mi");
+function fill(sel, ph, items, disp) {
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">' + ph + "</option>" + items.map(i => '<option value="' + i + '">' + disp(i) + "</option>").join("");
+  if (items.map(String).includes(cur)) sel.value = cur;
+}
+fill(D, "روز", range(0, 30), i => {
+  const dt = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
+  const j = toJ(dt.getFullYear(), dt.getMonth()+1, dt.getDate());
+  return (i === 0 ? "امروز" : i === 1 ? "فردا" : DAYS[dt.getDay()]) + " " + P(j[2]);
+});
+fill(H, "ساعت", range(0, 23), n => P(String(n).padStart(2, "0")));
+fill(Mi, "دقیقه", range(0, 11).map(i => i*5), n => P(String(n).padStart(2, "0")));
+
+$("#confirm").addEventListener("click", () => {
+  const err = $("#err");
+  const place = $("#place").value.trim();
+  if (D.value === "" || H.value === "" || Mi.value === "") { err.textContent = "لطفاً تاریخ و ساعت قرارمون رو کامل انتخاب کن 🥺"; return; }
+  if (!place) { err.textContent = "یادت نره بگی کجا دوست داری بریم 📍"; return; }
+  const base = new Date(now.getFullYear(), now.getMonth(), now.getDate() + (+D.value));
+  const when = new Date(base.getFullYear(), base.getMonth(), base.getDate(), +H.value, +Mi.value);
+  const jd = toJ(base.getFullYear(), base.getMonth()+1, base.getDate())[2];
+  if (when <= new Date()) { err.textContent = "این زمان گذشته! یه زمان توی آینده انتخاب کن ⏰"; return; }
+  err.textContent = "";
+  const note = $("#note").value.trim();
+  const hh = P(String(+H.value).padStart(2, "0")), mm = P(String(+Mi.value).padStart(2, "0"));
+  $("#finalText").textContent =
+    "پس قرارمون قطعی شد! ❤️🥰\n\n" +
+    "📅 تاریخ: " + DAYS[when.getDay()] + " " + P(jd) + "\n\n" +
+    "🕒 ساعت: " + hh + ":" + mm + "\n\n" +
+    "📍 محل قرار: " + place + "\n\n" +
+    (note ? "💌 پیام تو: " + note + "\n\n" : "") +
+    "بی‌صبرانه منتظرم ببینمت! 💕🌹\n\nقراره کلی خاطره قشنگ بسازیم! ✨";
+  const txt = $("#finalText").textContent;
+  $("#shIg").href = IG_USERNAME ? "https://ig.me/m/" + IG_USERNAME : "https://www.instagram.com/direct/inbox/";
+  $("#shIg").onclick = () => {
+    const b = $("#igNote");
+    navigator.clipboard.writeText(txt).then(() => { b.textContent = "متن کپی شد؛ توی دایرکت پیست کن 💌"; }).catch(() => { b.textContent = "کپی نشد، متن رو دستی انتخاب کن"; });
+  };
+  show("s-final");
+});
+</script>
+</body>
+</html>
